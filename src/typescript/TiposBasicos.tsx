@@ -8,9 +8,9 @@ export const TiposBasicos = () => {
     const estaActivo:boolean=true;
 
     const poderes:string[] = ['fuego','aire','agua','tierra'];
-    poderes.push(1);
-    poderes.push('rayo');
-    poderes.push(true);
+    // poderes.push(1);//no  es string no se añade
+    // poderes.push('rayo');
+    // poderes.push(true);no  es string no se añade
 
 
     return (
