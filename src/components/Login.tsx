@@ -13,8 +13,13 @@ const initialState:AuthState ={
     nombre:'',
 
 }
-type AuthAction ={type:'logout'};
-
+type LoginPayload = {
+    username:string;
+    nombre:string;
+}
+type AuthAction =
+| {type:'logout'}
+| {type:'login',payload:LoginPayload}
 const authReducer = (state:AuthState,action:AuthAction):AuthState =>{
 // el state no deberia modificarse
 switch (action.type) {
@@ -27,6 +32,14 @@ switch (action.type) {
         }
         
         break;
+    case 'login':
+        //tambien podemos hacer const{nombre,username}=action.payload; para desestructurar ya si solo usar esos nombres
+        return {
+            validando:false,
+            token:'abc123',
+            nombre:action.payload.nombre,
+            username:action.payload.username,
+        }
 
     default:
         return state;
@@ -35,13 +48,21 @@ switch (action.type) {
 
 
 export const Login = () => {
-   const [{validando}, dispatch] = useReducer(authReducer, initialState,)
+   const [{validando,token,nombre}, dispatch] = useReducer(authReducer, initialState,)
    //en vez de state desestructuramos con {} para traer validando
    useEffect(() => {
        setTimeout( () => {
            dispatch({type:'logout'})
        },1500);
    }, []);
+   const login =() =>{
+       dispatch(
+      {type:'login',
+       payload:{
+                nombre:'damian',
+                username:'damipher'
+       }})
+   }
    if(validando){
        return (
            <>
@@ -54,19 +75,24 @@ export const Login = () => {
    }  
    return (
         <>
+        <h3>Login</h3>
+        {
+            (token)
+            ?<div className="alert alert-success">Autenticado como: {nombre}</div>
+            :<div className="alert alert-danger">No autenticado</div>
+        }
        
-        <div className="alert alert-danger">
-            No autenticado
-        </div>
-        <div className="alert alert-success">
-            Autenticado
-        </div>
-        <button
-        className="btn btn-primary">Login
-        </button>
-        <button
-        className="btn btn-danger">Logout
-        </button>
+        {
+            (token)
+            ? <button
+            className="btn btn-danger">Logout
+            </button>
+            : <button onClick={login}
+            className="btn btn-primary">Login
+            </button>
+        }
+       
+       
 
         </>
     )
