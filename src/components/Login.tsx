@@ -63,6 +63,10 @@ export const Login = () => {
                 username:'damipher'
        }})
    }
+   const logout =() =>{
+    dispatch(
+   {type:'logout'})
+}
    if(validando){
        return (
            <>
@@ -84,7 +88,7 @@ export const Login = () => {
        
         {
             (token)
-            ? <button
+            ? <button onClick={logout}
             className="btn btn-danger">Logout
             </button>
             : <button onClick={login}
